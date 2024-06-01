@@ -1,0 +1,61 @@
+services:
+  redis:
+    image: redis:alpine
+    command: redis-server
+  coordinator:
+    build: 
+      context: .
+      dockerfile: src/coordinator.Dockerfile
+    volumes:
+      - ./results:/app/results
+    depends_on:
+      - redis
+    environment:
+      DEFENSE_TYPE: mode # 'none' or 'mode'
+      CLIENT_COUNT: 5
+  client1:
+    build:
+      context: .
+      dockerfile: src/client.Dockerfile
+    depends_on:
+      - coordinator
+    environment:
+      ATTACK_TYPE: none # 'none' or 'random_mislabel' or 'smart_mislabel'
+      CLIENT_ID: 1
+  client2:
+    build:
+      context: .
+      dockerfile: src/client.Dockerfile
+    depends_on:
+      - coordinator
+    environment:
+      ATTACK_TYPE: none # 'none' or 'random_mislabel' or 'smart_mislabel'
+      CLIENT_ID: 2
+  client3:
+    build:
+      context: .
+      dockerfile: src/client.Dockerfile
+    depends_on:
+      - coordinator
+    environment:
+      ATTACK_TYPE: none # 'none' or 'random_mislabel' or 'smart_mislabel'
+      CLIENT_ID: 3
+  client4:
+    build:
+      context: .
+      dockerfile: src/client.Dockerfile
+    depends_on:
+      - coordinator
+    environment:
+      ATTACK_TYPE: smart_mislabel # 'none' or 'random_mislabel' or 'smart_mislabel'
+      CLIENT_ID: 4
+  client5:
+    build:
+      context: .
+      dockerfile: src/client.Dockerfile
+    depends_on:
+      - coordinator
+    environment:
+      ATTACK_TYPE: smart_mislabel # 'none' or 'random_mislabel' or 'smart_mislabel'
+      CLIENT_ID: 5
+      

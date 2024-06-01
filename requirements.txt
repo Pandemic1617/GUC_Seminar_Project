@@ -1,0 +1,4 @@
+scikit-learn==1.5.0
+numpy==1.24.1
+redis==5.0.4
+pandas==2.2.0
